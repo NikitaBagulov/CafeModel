@@ -198,6 +198,66 @@
 						</InitialValue>
 					</Properties>
 				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1712162574499</Id>
+					<Name><![CDATA[СтоимостьЭлектричества]]></Name>
+					<X>-600</X><Y>30</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[1.58]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1712162607935</Id>
+					<Name><![CDATA[СтоимостьВоды]]></Name>
+					<X>-600</X><Y>60</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[15.19]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1712162621438</Id>
+					<Name><![CDATA[АренднаяПлата]]></Name>
+					<X>-600</X><Y>120</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[333.4]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1712162750788</Id>
+					<Name><![CDATA[Водоотведение]]></Name>
+					<X>-600</X><Y>90</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[18.47]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
 				<Variable Class="Parameter">
 					<Id>1710052263821</Id>
 					<Name><![CDATA[КоличествоМест]]></Name>
@@ -211,7 +271,7 @@
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[15]]></Code>
+							<Code><![CDATA[30]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1710052263819</Id>
@@ -566,7 +626,7 @@
 				<Event>
 					<Id>1710849458975</Id>
 					<Name><![CDATA[РасчетПрибыли]]></Name>
-					<X>-340</X><Y>390</Y>
+					<X>-340</X><Y>350</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -578,7 +638,7 @@
 						</Timeout>
 						<Rate Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
-							<Unit Class="RateUnits"><![CDATA[PER_HOUR]]></Unit>
+							<Unit Class="RateUnits"><![CDATA[PER_DAY]]></Unit>
 						</Rate>
 						<OccurrenceAtTime>true</OccurrenceAtTime>
 						<OccurrenceDate>1710921600000</OccurrenceDate>
@@ -592,8 +652,9 @@
 						</RecurrenceCode>
 						<Condition><![CDATA[false]]></Condition>
 					</Properties>
-					<Action><![CDATA[this.Расходы += 100*2;
-this.Прибыль = this.Доходы - this.Расходы;]]></Action>
+					<Action><![CDATA[this.Прибыль = this.Доходы - this.Расходы;
+this.Доходы = 0;
+this.Расходы = 0;]]></Action>
 				</Event>
 				<Event>
 					<Id>1710853347965</Id>
@@ -624,7 +685,11 @@ this.Прибыль = this.Доходы - this.Расходы;]]></Action>
 						</RecurrenceCode>
 						<Condition><![CDATA[false]]></Condition>
 					</Properties>
-					<Action><![CDATA[Расходы += кофе.ЦенаПокупки * кофе.Количество;]]></Action>
+					<Action><![CDATA[Расходы += кофе.ЦенаПокупки * кофе.Количество;
+Расходы += this.СтоимостьЭлектричества * uniform(6.6, 10);
+Расходы += this.СтоимостьВоды * uniform(1, 1.5);
+Расходы += this.Водоотведение * uniform(1, 1.5);
+Расходы += this.АренднаяПлата;]]></Action>
 				</Event>
 			</Events>
 			<Functions>
@@ -671,6 +736,256 @@ return false;
 ]]></Body>
 				</Function>
 			</Functions>
+			<Schedules>
+				<Schedule>
+					<Id>1712154416081</Id>
+					<Name><![CDATA[КоэффицентЗагруженности]]></Name>
+					<X>-340</X><Y>390</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ValueType>double_</ValueType>
+					<UnitType><![CDATA[RATE]]></UnitType>
+					<UnitOfValue Class="RateUnits"><![CDATA[PER_HOUR]]></UnitOfValue>
+					<DefaultValue>0.0</DefaultValue>
+					<RepresentationMode>intervals</RepresentationMode>
+					<RepresentationType>week</RepresentationType>
+					<FirstDayOfWeek>sunday</FirstDayOfWeek>
+					<TimeUnitsInterval>hours</TimeUnitsInterval>
+					<RepeatTime>86400000</RepeatTime>
+					<RepeatTimeInterval>days</RepeatTimeInterval>
+					<IsSnapTo>false</IsSnapTo>
+					<SnapTo>0</SnapTo>
+					<SnapToTimeUnits>minutes</SnapToTimeUnits>
+					<AllDayExceptionMode>false</AllDayExceptionMode>
+					<LoadFromDatabase><![CDATA[false]]></LoadFromDatabase>
+					<IntervalsQuery>
+						<TableReference>
+						</TableReference>
+							<StartColumnReference>
+							</StartColumnReference>
+							<EndColumnReference>
+							</EndColumnReference>
+							<ValueColumnReference>
+							</ValueColumnReference>
+					</IntervalsQuery>
+					<Intervals>
+						<Interval>
+							<Start>79200000</Start>
+							<End>32400000</End>
+							<Value>0.0</Value>
+						</Interval>
+						<Interval>
+							<Start>165600000</Start>
+							<End>118800000</End>
+							<Value>0.0</Value>
+						</Interval>
+						<Interval>
+							<Start>252000000</Start>
+							<End>205200000</End>
+							<Value>0.0</Value>
+						</Interval>
+						<Interval>
+							<Start>338400000</Start>
+							<End>291600000</End>
+							<Value>0.0</Value>
+						</Interval>
+						<Interval>
+							<Start>424800000</Start>
+							<End>378000000</End>
+							<Value>0.0</Value>
+						</Interval>
+						<Interval>
+							<Start>511200000</Start>
+							<End>464400000</End>
+							<Value>0.0</Value>
+						</Interval>
+						<Interval>
+							<Start>597600000</Start>
+							<End>550800000</End>
+							<Value>0.0</Value>
+						</Interval>
+						<Interval>
+							<Start>32400000</Start>
+							<End>43200000</End>
+							<Value>1.0</Value>
+						</Interval>
+						<Interval>
+							<Start>118800000</Start>
+							<End>129600000</End>
+							<Value>1.0</Value>
+						</Interval>
+						<Interval>
+							<Start>205200000</Start>
+							<End>216000000</End>
+							<Value>1.0</Value>
+						</Interval>
+						<Interval>
+							<Start>291600000</Start>
+							<End>302400000</End>
+							<Value>1.0</Value>
+						</Interval>
+						<Interval>
+							<Start>378000000</Start>
+							<End>388800000</End>
+							<Value>1.0</Value>
+						</Interval>
+						<Interval>
+							<Start>464400000</Start>
+							<End>475200000</End>
+							<Value>1.0</Value>
+						</Interval>
+						<Interval>
+							<Start>550800000</Start>
+							<End>561600000</End>
+							<Value>1.0</Value>
+						</Interval>
+						<Interval>
+							<Start>43200000</Start>
+							<End>50400000</End>
+							<Value>3.0</Value>
+						</Interval>
+						<Interval>
+							<Start>129600000</Start>
+							<End>136800000</End>
+							<Value>3.0</Value>
+						</Interval>
+						<Interval>
+							<Start>216000000</Start>
+							<End>223200000</End>
+							<Value>3.0</Value>
+						</Interval>
+						<Interval>
+							<Start>302400000</Start>
+							<End>309600000</End>
+							<Value>3.0</Value>
+						</Interval>
+						<Interval>
+							<Start>388800000</Start>
+							<End>396000000</End>
+							<Value>3.0</Value>
+						</Interval>
+						<Interval>
+							<Start>475200000</Start>
+							<End>482400000</End>
+							<Value>3.0</Value>
+						</Interval>
+						<Interval>
+							<Start>561600000</Start>
+							<End>568800000</End>
+							<Value>3.0</Value>
+						</Interval>
+						<Interval>
+							<Start>50400000</Start>
+							<End>64800000</End>
+							<Value>2.0</Value>
+						</Interval>
+						<Interval>
+							<Start>136800000</Start>
+							<End>151200000</End>
+							<Value>2.0</Value>
+						</Interval>
+						<Interval>
+							<Start>223200000</Start>
+							<End>237600000</End>
+							<Value>2.0</Value>
+						</Interval>
+						<Interval>
+							<Start>309600000</Start>
+							<End>324000000</End>
+							<Value>2.0</Value>
+						</Interval>
+						<Interval>
+							<Start>396000000</Start>
+							<End>410400000</End>
+							<Value>2.0</Value>
+						</Interval>
+						<Interval>
+							<Start>482400000</Start>
+							<End>496800000</End>
+							<Value>2.0</Value>
+						</Interval>
+						<Interval>
+							<Start>568800000</Start>
+							<End>583200000</End>
+							<Value>2.0</Value>
+						</Interval>
+						<Interval>
+							<Start>64800000</Start>
+							<End>72000000</End>
+							<Value>3.0</Value>
+						</Interval>
+						<Interval>
+							<Start>151200000</Start>
+							<End>158400000</End>
+							<Value>3.0</Value>
+						</Interval>
+						<Interval>
+							<Start>237600000</Start>
+							<End>244800000</End>
+							<Value>3.0</Value>
+						</Interval>
+						<Interval>
+							<Start>324000000</Start>
+							<End>331200000</End>
+							<Value>3.0</Value>
+						</Interval>
+						<Interval>
+							<Start>410400000</Start>
+							<End>417600000</End>
+							<Value>3.0</Value>
+						</Interval>
+						<Interval>
+							<Start>496800000</Start>
+							<End>504000000</End>
+							<Value>3.0</Value>
+						</Interval>
+						<Interval>
+							<Start>583200000</Start>
+							<End>590400000</End>
+							<Value>3.0</Value>
+						</Interval>
+						<Interval>
+							<Start>72000000</Start>
+							<End>79200000</End>
+							<Value>1.0</Value>
+						</Interval>
+						<Interval>
+							<Start>158400000</Start>
+							<End>165600000</End>
+							<Value>1.0</Value>
+						</Interval>
+						<Interval>
+							<Start>244800000</Start>
+							<End>252000000</End>
+							<Value>1.0</Value>
+						</Interval>
+						<Interval>
+							<Start>331200000</Start>
+							<End>338400000</End>
+							<Value>1.0</Value>
+						</Interval>
+						<Interval>
+							<Start>417600000</Start>
+							<End>424800000</End>
+							<Value>1.0</Value>
+						</Interval>
+						<Interval>
+							<Start>504000000</Start>
+							<End>511200000</End>
+							<Value>1.0</Value>
+						</Interval>
+						<Interval>
+							<Start>590400000</Start>
+							<End>597600000</End>
+							<Value>1.0</Value>
+						</Interval>
+					</Intervals>
+					<Exceptions>
+					</Exceptions>
+				</Schedule>
+			</Schedules>
 			<AgentLinks>
 				<AgentLink>
 					<Id>1708827941915</Id>
@@ -737,6 +1052,9 @@ return false;
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[arrivalType]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[self.RATE_SCHEDULE]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[rate]]></Name>
@@ -750,15 +1068,27 @@ return false;
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[rateSchedule]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[КоэффицентЗагруженности]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[modifyRate]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[true]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[rateExpression]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[baseRate * (7.0 + (10.0 - 0.0) * random())]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[arrivalSchedule]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[КоэффицентЗагруженности]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[limitArrivals]]></Name>
@@ -1557,6 +1887,9 @@ return false;
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[onExit2]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[КоличествоУшедших+=1;]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[onExit3]]></Name>
@@ -2009,7 +2342,7 @@ return false;
     			<TimeStackChart>
 					<Id>1708842334766</Id>
 					<Name><![CDATA[chart]]></Name>
-					<X>510</X><Y>10</Y>
+					<X>520</X><Y>-620</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -2035,7 +2368,7 @@ return false;
 						<XOffset>30</XOffset>
 						<YOffset>10</YOffset>
 						<Width>400</Width>
-						<Height>190</Height>
+						<Height>180</Height>
 						<BackgroundColor>-1</BackgroundColor>
 						<BorderColor>-16777216</BorderColor>
 						<GridColor>-12566464</GridColor>
@@ -2043,7 +2376,7 @@ return false;
 					<Legend>
 						<Place>SOUTH</Place>
 						<TextColor>-16777216</TextColor>
-						<Size>50</Size>
+						<Size>60</Size>
 					</Legend>
 					<Labels>
 						<HorLabelsPosition>DEFAULT</HorLabelsPosition>
@@ -2078,7 +2411,7 @@ return false;
     			<TimeStackChart>
 					<Id>1708848427226</Id>
 					<Name><![CDATA[chart1]]></Name>
-					<X>470</X><Y>230</Y>
+					<X>480</X><Y>-370</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -2089,22 +2422,22 @@ return false;
 					<OccurrenceDate>1708934400000</OccurrenceDate>
 					<OccurrenceTime Class="CodeUnitValue">
 						<Code><![CDATA[0]]></Code>
-						<Unit Class="TimeUnits"><![CDATA[HOUR]]></Unit>
+						<Unit Class="TimeUnits"><![CDATA[DAY]]></Unit>
 					</OccurrenceTime>
 					<RecurrenceCode Class="CodeUnitValue">
 						<Code><![CDATA[1]]></Code>
-						<Unit Class="TimeUnits"><![CDATA[HOUR]]></Unit>
+						<Unit Class="TimeUnits"><![CDATA[DAY]]></Unit>
 					</RecurrenceCode>
 					<EmbeddedIcon>false</EmbeddedIcon>
-					<Width>530</Width>
-					<Height>370</Height>
+					<Width>520</Width>
+					<Height>360</Height>
 					<BackgroundColor/>
 					<BorderColor/>
 					<ChartArea>
 						<XOffset>50</XOffset>
 						<YOffset>30</YOffset>
-						<Width>460</Width>
-						<Height>280</Height>
+						<Width>450</Width>
+						<Height>270</Height>
 						<BackgroundColor>-1</BackgroundColor>
 						<BorderColor>-16777216</BorderColor>
 						<GridColor>-12566464</GridColor>
@@ -2122,7 +2455,7 @@ return false;
 					<ShowLegend>true</ShowLegend>
 					<TimeWindowsMovementType>MOVEMENT_WITH_TIME</TimeWindowsMovementType>		
 					<TimeWindowUnits>MODEL_TIME_UNIT</TimeWindowUnits>
-					<TimeWindowExpression><![CDATA[100]]></TimeWindowExpression>
+					<TimeWindowExpression><![CDATA[1000]]></TimeWindowExpression>
 					<DatasetExpression>
 					<Id>1708848428441</Id>
 					<Expression><![CDATA[my_dataset]]></Expression>
@@ -2474,6 +2807,150 @@ return false;
 					</Font>
 					<Alignment>LEFT</Alignment>
 				</Text>
+    			<TimePlot>
+					<Id>1712165156778</Id>
+					<Name><![CDATA[Profit]]></Name>
+					<X>520</X><Y>260</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
+					<AutoUpdate>true</AutoUpdate>
+					<OccurrenceAtTime>true</OccurrenceAtTime>
+					<OccurrenceDate>1712217600000</OccurrenceDate>
+					<OccurrenceTime Class="CodeUnitValue">
+						<Code><![CDATA[0]]></Code>
+						<Unit Class="TimeUnits"><![CDATA[MILLISECOND]]></Unit>
+					</OccurrenceTime>
+					<RecurrenceCode Class="CodeUnitValue">
+						<Code><![CDATA[1]]></Code>
+						<Unit Class="TimeUnits"><![CDATA[DAY]]></Unit>
+					</RecurrenceCode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Width>480</Width>
+					<Height>340</Height>
+					<BackgroundColor/>
+					<BorderColor/>
+					<ChartArea>
+						<XOffset>50</XOffset>
+						<YOffset>30</YOffset>
+						<Width>400</Width>
+						<Height>250</Height>
+						<BackgroundColor>-1</BackgroundColor>
+						<BorderColor>-16777216</BorderColor>
+						<GridColor>-12566464</GridColor>
+					</ChartArea>
+					<Legend>
+						<Place>SOUTH</Place>
+						<TextColor>-16777216</TextColor>
+						<Size>30</Size>
+					</Legend>
+					<Labels>
+						<HorLabelsPosition>DEFAULT</HorLabelsPosition>
+						<VerLabelsPosition>DEFAULT</VerLabelsPosition>
+						<TextColor>-12566464</TextColor>
+					</Labels>
+					<ShowLegend>true</ShowLegend>
+					<TimeWindowsMovementType>MOVEMENT_WITH_TIME</TimeWindowsMovementType>		
+					<TimeWindowUnits>DAY</TimeWindowUnits>
+					<VerScaleFromExpression><![CDATA[0]]></VerScaleFromExpression>
+					<VerScaleToExpression><![CDATA[1]]></VerScaleToExpression>
+					<VerScaleType>AUTO</VerScaleType>
+					<DrawLine>true</DrawLine>
+					<Interpolation>LINEAR</Interpolation>
+					<DatasetExpression>  
+						<Title><![CDATA[Ежедневная прибыль]]></Title>
+					<Id>1712165157966</Id>
+					<Expression><![CDATA[my_dataset]]></Expression>
+					<Color>-10496</Color>
+					<Expression2><![CDATA[this.Прибыль]]></Expression2>
+					<Expression2Flag>true</Expression2Flag>
+						<PointStyle>CIRCLE</PointStyle>
+						<LineWidth>1.0</LineWidth>
+					</DatasetExpression>
+					<SamplesToKeep>100</SamplesToKeep>
+					<TimeWindowExpression><![CDATA[30]]></TimeWindowExpression>
+					<FillAreaUnderLine>false</FillAreaUnderLine>
+					<LabelFormat>MODEL_TIME_UNITS</LabelFormat>
+    			</TimePlot>
+    			<TimePlot>
+					<Id>1712165955706</Id>
+					<Name><![CDATA[plot]]></Name>
+					<X>560</X><Y>0</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
+					<AutoUpdate>true</AutoUpdate>
+					<OccurrenceAtTime>true</OccurrenceAtTime>
+					<OccurrenceDate>1712217600000</OccurrenceDate>
+					<OccurrenceTime Class="CodeUnitValue">
+						<Code><![CDATA[0]]></Code>
+						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+					</OccurrenceTime>
+					<RecurrenceCode Class="CodeUnitValue">
+						<Code><![CDATA[1]]></Code>
+						<Unit Class="TimeUnits"><![CDATA[DAY]]></Unit>
+					</RecurrenceCode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Width>440</Width>
+					<Height>260</Height>
+					<BackgroundColor/>
+					<BorderColor/>
+					<ChartArea>
+						<XOffset>50</XOffset>
+						<YOffset>30</YOffset>
+						<Width>360</Width>
+						<Height>170</Height>
+						<BackgroundColor>-1</BackgroundColor>
+						<BorderColor>-16777216</BorderColor>
+						<GridColor>-12566464</GridColor>
+					</ChartArea>
+					<Legend>
+						<Place>SOUTH</Place>
+						<TextColor>-16777216</TextColor>
+						<Size>30</Size>
+					</Legend>
+					<Labels>
+						<HorLabelsPosition>DEFAULT</HorLabelsPosition>
+						<VerLabelsPosition>DEFAULT</VerLabelsPosition>
+						<TextColor>-12566464</TextColor>
+					</Labels>
+					<ShowLegend>true</ShowLegend>
+					<TimeWindowsMovementType>MOVEMENT_WITH_TIME</TimeWindowsMovementType>		
+					<TimeWindowUnits>DAY</TimeWindowUnits>
+					<VerScaleFromExpression><![CDATA[0]]></VerScaleFromExpression>
+					<VerScaleToExpression><![CDATA[1]]></VerScaleToExpression>
+					<VerScaleType>AUTO</VerScaleType>
+					<DrawLine>true</DrawLine>
+					<Interpolation>LINEAR</Interpolation>
+					<DatasetExpression>  
+						<Title><![CDATA[КоличествоУшедших]]></Title>
+					<Id>1712165957035</Id>
+					<Expression><![CDATA[my_dataset]]></Expression>
+					<Color>-65536</Color>
+					<Expression2><![CDATA[КоличествоУшедших]]></Expression2>
+					<Expression2Flag>true</Expression2Flag>
+						<PointStyle>CIRCLE</PointStyle>
+						<LineWidth>1.0</LineWidth>
+					</DatasetExpression>
+					<DatasetExpression>  
+						<Title><![CDATA[КоличествоКлиентов]]></Title>
+					<Id>1712165961389</Id>
+					<Expression><![CDATA[my_dataset1]]></Expression>
+					<Color>-16711936</Color>
+					<Expression2><![CDATA[КоличествоКлиентов]]></Expression2>
+					<Expression2Flag>true</Expression2Flag>
+						<PointStyle>SQUARE</PointStyle>
+						<LineWidth>1.0</LineWidth>
+					</DatasetExpression>
+					<SamplesToKeep>100</SamplesToKeep>
+					<TimeWindowExpression><![CDATA[30]]></TimeWindowExpression>
+					<FillAreaUnderLine>false</FillAreaUnderLine>
+					<LabelFormat>MODEL_TIME_UNITS</LabelFormat>
+    			</TimePlot>
 			</Presentation>
 
 				</Level>
@@ -2654,19 +3131,19 @@ return false;
 					<Id>1708841729706</Id>
 					<Name><![CDATA[ПотенциальныйКлиент]]></Name>
 					<X>220</X><Y>80</Y>
-					<Label><X>10</X><Y>10</Y></Label>
+					<Label><X>25</X><Y>20</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Properties Width="150" Height="40">
+					<Properties Width="220" Height="40">
 						<FillColor>-4144960</FillColor>
 					</Properties>
 				</StatechartElement>
 				<StatechartElement Class="State" ParentState="ROOT_NODE">
 					<Id>1708842082865</Id>
 					<Name><![CDATA[Гость]]></Name>
-					<X>250</X><Y>180</Y>
-					<Label><X>10</X><Y>10</Y></Label>
+					<X>280</X><Y>180</Y>
+					<Label><X>25</X><Y>15</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
@@ -2677,7 +3154,7 @@ return false;
 				<StatechartElement Class="EntryPoint" ParentState="ROOT_NODE">
 					<Id>1708841726670</Id>
 					<Name><![CDATA[statechart]]></Name>
-					<X>300</X><Y>40</Y>
+					<X>330</X><Y>40</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -2692,14 +3169,14 @@ return false;
 				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
 					<Id>1708842121474</Id>
 					<Name><![CDATA[transition]]></Name>
-					<X>300</X><Y>120</Y>
+					<X>330</X><Y>120</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>25</Y></Point>
+						<Point><X>0</X><Y>35</Y></Point>
 						<Point><X>0</X><Y>60</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
@@ -3092,7 +3569,7 @@ return false;
 				<Variable Class="Parameter">
 					<Id>1710845483528</Id>
 					<Name><![CDATA[ПроцентНадбавки]]></Name>
-					<X>40</X><Y>80</Y>
+					<X>40</X><Y>70</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -3102,7 +3579,7 @@ return false;
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[1]]></Code>
+							<Code><![CDATA[1.25]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1710845483526</Id>
@@ -3116,7 +3593,7 @@ return false;
 				<Variable Class="Parameter">
 					<Id>1710844873110</Id>
 					<Name><![CDATA[ЦенаПродажи]]></Name>
-					<X>40</X><Y>120</Y>
+					<X>40</X><Y>100</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -3140,7 +3617,7 @@ return false;
 				<Variable Class="Parameter">
 					<Id>1710846163813</Id>
 					<Name><![CDATA[Количество]]></Name>
-					<X>180</X><Y>40</Y>
+					<X>40</X><Y>130</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
