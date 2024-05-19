@@ -186,7 +186,7 @@
 				<Variable Class="PlainVariable">
 					<Id>1710848067253</Id>
 					<Name><![CDATA[кофе]]></Name>
-					<X>-310</X><Y>690</Y>
+					<X>-340</X><Y>430</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -258,6 +258,18 @@
 						</InitialValue>
 					</Properties>
 				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1716112385476</Id>
+					<Name><![CDATA[variable]]></Name>
+					<X>-340</X><Y>110</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
 				<Variable Class="Parameter">
 					<Id>1710052263821</Id>
 					<Name><![CDATA[КоличествоМест]]></Name>
@@ -271,7 +283,7 @@
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[30]]></Code>
+							<Code><![CDATA[40]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1710052263819</Id>
@@ -652,9 +664,13 @@
 						</RecurrenceCode>
 						<Condition><![CDATA[false]]></Condition>
 					</Properties>
-					<Action><![CDATA[this.Прибыль = this.Доходы - this.Расходы;
+					<Action><![CDATA[//this.Прибыль = this.Доходы - this.Расходы;
+//this.Прибыль = -6.82 + 32.25 * this.КоличествоКлиентов;
+this.Прибыль = 0;
 this.Доходы = 0;
-this.Расходы = 0;]]></Action>
+this.Расходы = 0;
+this.КоличествоКлиентов = 0;
+this.КоличествоУшедших = 0;]]></Action>
 				</Event>
 				<Event>
 					<Id>1710853347965</Id>
@@ -1753,7 +1769,8 @@ return false;
 						<Parameter>
 							<Name><![CDATA[onExit1]]></Name>
 							<Value Class="CodeValue">
-								<Code><![CDATA[КоличествоКлиентов+=1;]]></Code>
+								<Code><![CDATA[КоличествоКлиентов+=1;
+Прибыль += -6.82 + 32.25;]]></Code>
 							</Value>
 						</Parameter>
 						<Parameter>
@@ -2411,7 +2428,7 @@ return false;
     			<TimeStackChart>
 					<Id>1708848427226</Id>
 					<Name><![CDATA[chart1]]></Name>
-					<X>480</X><Y>-370</Y>
+					<X>530</X><Y>-380</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -2429,14 +2446,14 @@ return false;
 						<Unit Class="TimeUnits"><![CDATA[DAY]]></Unit>
 					</RecurrenceCode>
 					<EmbeddedIcon>false</EmbeddedIcon>
-					<Width>520</Width>
+					<Width>470</Width>
 					<Height>360</Height>
 					<BackgroundColor/>
 					<BorderColor/>
 					<ChartArea>
 						<XOffset>50</XOffset>
 						<YOffset>30</YOffset>
-						<Width>450</Width>
+						<Width>400</Width>
 						<Height>270</Height>
 						<BackgroundColor>-1</BackgroundColor>
 						<BorderColor>-16777216</BorderColor>
@@ -2464,7 +2481,7 @@ return false;
 					<Expression2Flag>true</Expression2Flag>
 							<Title><![CDATA[Прибыль]]></Title>
 					</DatasetExpression>
-					<SamplesToKeep>1000</SamplesToKeep>
+					<SamplesToKeep>10</SamplesToKeep>
 					<VerScaleToExpression><![CDATA[1]]></VerScaleToExpression>
 					<VerScaleType>AUTO</VerScaleType>
 					<LabelFormat>MODEL_TIME_UNITS</LabelFormat>
@@ -2741,76 +2758,10 @@ return false;
 			</Presentation>
 
 				</Group>
-				<Text>
-					<Id>1710852342354</Id>
-					<Name><![CDATA[Count2]]></Name>
-					<X>-320</X><Y>440</Y>
-					<Label><X>0</X><Y>-10</Y></Label>
-					<PublicFlag>true</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<DrawMode>SHAPE_DRAW_2D</DrawMode>
-					<EmbeddedIcon>false</EmbeddedIcon>
-					<Z>0</Z>
-					<Rotation>0.0</Rotation>
-					<Color>-16777216</Color>
-					<Text><![CDATA[text]]></Text>
-					<TextCode><![CDATA[Доходы]]></TextCode>
-					<Font>
-						<Name>SansSerif</Name>
-						<Size>56</Size>
-						<Style>0</Style>
-					</Font>
-					<Alignment>LEFT</Alignment>
-				</Text>
-				<Text>
-					<Id>1710852364254</Id>
-					<Name><![CDATA[Count1]]></Name>
-					<X>-320</X><Y>610</Y>
-					<Label><X>0</X><Y>-10</Y></Label>
-					<PublicFlag>true</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<DrawMode>SHAPE_DRAW_2D</DrawMode>
-					<EmbeddedIcon>false</EmbeddedIcon>
-					<Z>0</Z>
-					<Rotation>0.0</Rotation>
-					<Color>-16777216</Color>
-					<Text><![CDATA[text]]></Text>
-					<TextCode><![CDATA[Расходы]]></TextCode>
-					<Font>
-						<Name>SansSerif</Name>
-						<Size>56</Size>
-						<Style>0</Style>
-					</Font>
-					<Alignment>LEFT</Alignment>
-				</Text>
-				<Text>
-					<Id>1710852365571</Id>
-					<Name><![CDATA[Count3]]></Name>
-					<X>-320</X><Y>520</Y>
-					<Label><X>0</X><Y>-10</Y></Label>
-					<PublicFlag>true</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<DrawMode>SHAPE_DRAW_2D</DrawMode>
-					<EmbeddedIcon>false</EmbeddedIcon>
-					<Z>0</Z>
-					<Rotation>0.0</Rotation>
-					<Color>-16777216</Color>
-					<Text><![CDATA[text]]></Text>
-					<TextCode><![CDATA[Прибыль]]></TextCode>
-					<Font>
-						<Name>SansSerif</Name>
-						<Size>56</Size>
-						<Style>0</Style>
-					</Font>
-					<Alignment>LEFT</Alignment>
-				</Text>
     			<TimePlot>
 					<Id>1712165156778</Id>
 					<Name><![CDATA[Profit]]></Name>
-					<X>520</X><Y>260</Y>
+					<X>520</X><Y>270</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -2821,7 +2772,7 @@ return false;
 					<OccurrenceDate>1712217600000</OccurrenceDate>
 					<OccurrenceTime Class="CodeUnitValue">
 						<Code><![CDATA[0]]></Code>
-						<Unit Class="TimeUnits"><![CDATA[MILLISECOND]]></Unit>
+						<Unit Class="TimeUnits"><![CDATA[DAY]]></Unit>
 					</OccurrenceTime>
 					<RecurrenceCode Class="CodeUnitValue">
 						<Code><![CDATA[1]]></Code>
@@ -2867,7 +2818,7 @@ return false;
 					<Expression2><![CDATA[this.Прибыль]]></Expression2>
 					<Expression2Flag>true</Expression2Flag>
 						<PointStyle>CIRCLE</PointStyle>
-						<LineWidth>1.0</LineWidth>
+						<LineWidth>10.0</LineWidth>
 					</DatasetExpression>
 					<SamplesToKeep>100</SamplesToKeep>
 					<TimeWindowExpression><![CDATA[30]]></TimeWindowExpression>
@@ -2877,7 +2828,7 @@ return false;
     			<TimePlot>
 					<Id>1712165955706</Id>
 					<Name><![CDATA[plot]]></Name>
-					<X>560</X><Y>0</Y>
+					<X>520</X><Y>0</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -2888,22 +2839,22 @@ return false;
 					<OccurrenceDate>1712217600000</OccurrenceDate>
 					<OccurrenceTime Class="CodeUnitValue">
 						<Code><![CDATA[0]]></Code>
-						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+						<Unit Class="TimeUnits"><![CDATA[DAY]]></Unit>
 					</OccurrenceTime>
 					<RecurrenceCode Class="CodeUnitValue">
 						<Code><![CDATA[1]]></Code>
 						<Unit Class="TimeUnits"><![CDATA[DAY]]></Unit>
 					</RecurrenceCode>
 					<EmbeddedIcon>false</EmbeddedIcon>
-					<Width>440</Width>
-					<Height>260</Height>
+					<Width>480</Width>
+					<Height>290</Height>
 					<BackgroundColor/>
 					<BorderColor/>
 					<ChartArea>
 						<XOffset>50</XOffset>
 						<YOffset>30</YOffset>
-						<Width>360</Width>
-						<Height>170</Height>
+						<Width>400</Width>
+						<Height>200</Height>
 						<BackgroundColor>-1</BackgroundColor>
 						<BorderColor>-16777216</BorderColor>
 						<GridColor>-12566464</GridColor>
@@ -2934,7 +2885,7 @@ return false;
 					<Expression2><![CDATA[КоличествоУшедших]]></Expression2>
 					<Expression2Flag>true</Expression2Flag>
 						<PointStyle>CIRCLE</PointStyle>
-						<LineWidth>1.0</LineWidth>
+						<LineWidth>5.0</LineWidth>
 					</DatasetExpression>
 					<DatasetExpression>  
 						<Title><![CDATA[КоличествоКлиентов]]></Title>
@@ -2943,10 +2894,10 @@ return false;
 					<Color>-16711936</Color>
 					<Expression2><![CDATA[КоличествоКлиентов]]></Expression2>
 					<Expression2Flag>true</Expression2Flag>
-						<PointStyle>SQUARE</PointStyle>
-						<LineWidth>1.0</LineWidth>
+						<PointStyle>TRIANGLE</PointStyle>
+						<LineWidth>5.0</LineWidth>
 					</DatasetExpression>
-					<SamplesToKeep>100</SamplesToKeep>
+					<SamplesToKeep>10</SamplesToKeep>
 					<TimeWindowExpression><![CDATA[30]]></TimeWindowExpression>
 					<FillAreaUnderLine>false</FillAreaUnderLine>
 					<LabelFormat>MODEL_TIME_UNITS</LabelFormat>
